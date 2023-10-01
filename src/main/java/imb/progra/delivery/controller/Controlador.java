@@ -18,7 +18,6 @@ import imb.progra.delivery.service.EstadoInterfaz;
 @RestController
 @RequestMapping("api/v1")
 
-//esto es un controlador
 public class Controlador {
 	@Autowired    
 	EstadoInterfaz servicio ;
