@@ -10,4 +10,5 @@ public interface IClienteService {
 	Optional<Cliente> findById (Long id) throws Exception;
 	boolean delete (Long id) throws Exception;
 	Cliente save(Cliente cliente) throws Exception;
+	boolean existe(Long id);
 }

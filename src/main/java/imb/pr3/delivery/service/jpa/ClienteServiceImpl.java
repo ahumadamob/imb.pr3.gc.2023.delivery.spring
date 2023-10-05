@@ -60,4 +60,9 @@ public class ClienteServiceImpl implements IClienteService{
 		}
 	}
 
+	@Override
+    public boolean existe(Long id) {
+    	return (id == null) ? false: clienteRepository.existsById(id);
+    }
+
 }

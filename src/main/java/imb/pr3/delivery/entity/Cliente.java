@@ -1,9 +1,14 @@
 package imb.pr3.delivery.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+
 
 @Entity
 public class Cliente {
@@ -14,7 +19,14 @@ public class Cliente {
 	
 	private String nombre;
 	private String apellido;
+	
+	@NotBlank(message= "El telefono no puede estar vacío")
 	private String telefono;
+	
+
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos;
+	
 	
 	public Cliente() {
 
