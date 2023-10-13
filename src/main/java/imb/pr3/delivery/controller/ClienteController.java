@@ -32,31 +32,31 @@ public class ClienteController {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<ApiResponse<List<Cliente>>> obtenerTodosClientes() throws Exception {
+	public ResponseEntity<ApiResponse<List<Cliente>>> obtenerTodosClientes() {
 	    List<Cliente> clientes = clienteService.findAll();
 	    return clientes.isEmpty() ? ResponseUtil.notFound("No se encontraron datos para Cliente") : ResponseUtil.success(clientes);
 	}
 
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ApiResponse<Optional<Cliente>>> obtenerClientePorId(@PathVariable Long id) throws Exception{
+	public ResponseEntity<ApiResponse<Optional<Cliente>>> obtenerClientePorId(@PathVariable Integer id){
 		Optional<Cliente> cliente = clienteService.findById(id);
 		return cliente.isPresent() ? ResponseUtil.success(cliente) : ResponseUtil.notFound("Cliente no encontrado");
 	}
 	
 	@PostMapping("")
-	public ResponseEntity<ApiResponse<Cliente>> crearCliente(@RequestBody Cliente cliente) throws Exception{
-		return cliente.getNombre().isEmpty() ? ResponseUtil.badRequest("Debe ingresar un nombre") : ResponseUtil.created(clienteService.save(cliente));
+	public ResponseEntity<ApiResponse<Cliente>> crearCliente(@RequestBody Cliente cliente){
+		return clienteService.existe(cliente.getId()) ? ResponseUtil.badRequest("Debe ingresar un nombre") : ResponseUtil.created(clienteService.save(cliente));
 	}
 	
 	@PutMapping("")
-	public ResponseEntity<ApiResponse<Cliente>> modificarCliente(@RequestBody Cliente cliente) throws Exception{
+	public ResponseEntity<ApiResponse<Cliente>> modificarCliente(@RequestBody Cliente cliente){
 		return clienteService.existe(cliente.getId()) ?  ResponseUtil.success(clienteService.save(cliente)) 
 				: ResponseUtil.badRequest("No existe Cliente con el id especificado");
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<ApiResponse<Boolean>> eliminarCliente(@PathVariable Long id) throws Exception {
+	public ResponseEntity<ApiResponse<Boolean>> eliminarCliente(@PathVariable Integer id) {
 		return clienteService.existe(id) ? ResponseUtil.success(clienteService.delete(id)) : ResponseUtil.badRequest("El ID no existe");
 	}
 	
