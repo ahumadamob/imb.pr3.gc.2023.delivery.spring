@@ -17,47 +17,36 @@ public class ClienteServiceImpl implements IClienteService{
 	ClienteRepository clienteRepository;
 	
 	@Override
-	public List<Cliente> findAll() throws Exception {
-		try {
+	public List<Cliente> findAll()  {
 			List<Cliente> clientes = clienteRepository.findAll();
 			return (List<Cliente>) clientes;
-		}catch(Exception e) {
-			throw new Exception(e.getMessage());
-		}
+
 	}
 
 	@Override
-	public Optional<Cliente> findById(Long id) throws Exception {
-		try {			
+	public Optional<Cliente> findById(Integer id)  {	
 			Optional<Cliente> cliente = clienteRepository.findById(id);
 			return cliente;
-		}catch(Exception e) {
-			throw new Exception(e.getMessage());
-		}
+
 	}
 
 	@Override
-	public boolean delete(Long id) throws Exception {
-		try {			
-			if(clienteRepository.existsById(id)) {
-				clienteRepository.deleteById(id);
-				return true;
-			}else {
-				throw new Exception();
-			}
-		}catch(Exception e) {
-			throw new Exception(e.getMessage());
-		}
+	public boolean delete(Integer id)  {
+			clienteRepository.deleteById(id);
+			return true;
+
 	}
 
 	@Override
-	public Cliente save(Cliente cliente) throws Exception {
-		try {			
+	public Cliente save(Cliente cliente) {			
 			cliente = clienteRepository.save(cliente);
 			return cliente;
-		}catch(Exception e) {
-			throw new Exception(e.getMessage());
-		}
+
 	}
+
+	@Override
+    public boolean existe(Integer id) {
+    	return (id == null) ? false: clienteRepository.existsById(id);
+    }
 
 }
