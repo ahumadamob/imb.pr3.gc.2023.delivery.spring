@@ -35,7 +35,7 @@ public class TipoComidaControllerImpl {
 	@GetMapping("")
 	public ResponseEntity<ApiResponse<List<TipoComida>>> buscarTodos() {
 	    List<TipoComida> tipoComida = tipoComidaService.buscarTodos();
-	    return tipoComida.isEmpty() ? ResponseUtil.notFound("No hay comidas")
+	    return tipoComida.isEmpty() ? ResponseUtil.notFound("No hay comidas guardadas")
 	            : ResponseUtil.success(tipoComida);
 	}
 	

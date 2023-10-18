@@ -1,7 +1,5 @@
 package imb.pr3.delivery.entity;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,14 +18,16 @@ public class TipoComida {
 	private String nombre;
 	
 	@ManyToOne
-	private DetallePedido detallePedido;
+	private Comida comida;
 
-	public DetallePedido getDetallePedido() {
-		return detallePedido;
+	
+
+	public Comida getComida() {
+		return comida;
 	}
 
-	public void setDetallePedido(DetallePedido detallePedido) {
-		this.detallePedido = detallePedido;
+	public void setComida(Comida comida) {
+		this.comida = comida;
 	}
 
 	public Integer getId() {
