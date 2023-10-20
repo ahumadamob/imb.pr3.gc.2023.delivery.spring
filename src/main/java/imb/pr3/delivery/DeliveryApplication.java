@@ -1,4 +1,4 @@
-package imb.progra.delivery;
+package imb.pr3.delivery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

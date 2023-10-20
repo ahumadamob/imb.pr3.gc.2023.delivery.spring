@@ -1,9 +1,10 @@
-package imb.progra.delivery.entity;
+package imb.pr3.delivery.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 
 @Entity
 public class Estado {
