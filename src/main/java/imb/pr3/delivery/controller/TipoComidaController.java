@@ -26,7 +26,9 @@ import jakarta.validation.ConstraintViolationException;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(path="api/v1/tipoComida")
-public class TipoComidaControllerImpl {
+public class TipoComidaController {
+	
+	
 	
 	@Autowired
 	private TipoComidaServiceImpl tipoComidaService;

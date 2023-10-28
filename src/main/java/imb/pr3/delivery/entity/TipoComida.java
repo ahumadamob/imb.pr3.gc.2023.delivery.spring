@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 
 
 
@@ -14,22 +15,9 @@ public class TipoComida {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+	@NotBlank(message= "El nombre no puede estar vacío")
 	private String nombre;
 	
-	@ManyToOne
-	private Comida comida;
-
-	
-
-	public Comida getComida() {
-		return comida;
-	}
-
-	public void setComida(Comida comida) {
-		this.comida = comida;
-	}
-
 	public Integer getId() {
 		return id;
 	}
