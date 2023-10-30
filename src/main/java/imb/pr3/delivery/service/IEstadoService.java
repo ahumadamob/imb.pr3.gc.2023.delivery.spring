@@ -6,9 +6,16 @@ import java.util.Optional;
 import imb.pr3.delivery.entity.Estado;
 
 public interface IEstadoService {
-	List<Estado> findAll() throws Exception;
-	Optional<Estado> findById (Integer id);
-	boolean delete (Integer id);
-	Estado save(Estado estado) ;
+
+
+	public List<Estado> buscarTodos() throws Exception ;
+
+	public Optional<Estado> buscarPorId(Integer id) throws Exception;
+	
+
 	boolean existe(Integer id);
+	
+	public boolean eliminar(Integer id) throws Exception;
+	
+	public Estado guardar (Estado estado) throws Exception;
 }

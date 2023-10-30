@@ -23,7 +23,7 @@ import imb.pr3.delivery.util.ResponseUtil;
 import jakarta.validation.ConstraintViolationException;
 
 @RestController
-@RequestMapping(path = "api/estado")
+@RequestMapping(path = "api/estado/")
 public class EstadoController {
 	@Autowired
 	IEstadoService estadoService;
@@ -31,31 +31,32 @@ public class EstadoController {
 	// buscarTodos
 	@GetMapping("")
 	public ResponseEntity<APIResponse<List<Estado>>> obtenerTodosLosClientes() throws Exception {
-		List<Estado> estado = estadoService.findAll();
+		List<Estado> estado = estadoService.buscarTodos();
 		return estado.isEmpty() ? ResponseUtil.notFound("No hay estados disponibles")
 		           : ResponseUtil.success(estado); 
 	}
 	@GetMapping("{id}")
-	public ResponseEntity<APIResponse<Optional<Estado>>> buscarEstadoPorId(@PathVariable("id") Integer id){
-		Optional<Estado> estado=  estadoService.findById(id);
+	public ResponseEntity<APIResponse<Optional<Estado>>> buscarEstadoPorId(@PathVariable("id") Integer id) throws Exception{
+		Optional<Estado> estado=  estadoService.buscarPorId(id);
 		return estado == null ? ResponseUtil.notFound("No se encontró el estado con el identificador proporcionado")
 				: ResponseUtil.success(estado);	
 	}
-	@PostMapping
-    public ResponseEntity<APIResponse<Estado>> crearEstado(@RequestBody Estado estado, BindingResult result) {
-        return estadoService.existe(estado.getId()) ? ResponseUtil.badRequest("No se puede crear un estado, el ID ingresado ya existe")
-        		: ResponseUtil.success(estado);
-     }
+	@PostMapping("")
+	public ResponseEntity<APIResponse<Estado>> crearCliente(@RequestBody Estado estado) throws Exception{
+		return estadoService.existe(estado.getId()) ? ResponseUtil.badRequest("Debe ingresar un nombre") : 
+			ResponseUtil.created(estadoService.guardar(estado));
+	}
+	
 	@PutMapping
-	public ResponseEntity<APIResponse<Estado>> modificarEstado(@RequestBody Estado estado) {
-		return estadoService.existe(estado.getId()) ? ResponseUtil.success(estadoService.save(estado))
+	public ResponseEntity<APIResponse<Estado>> modificarEstado(@RequestBody Estado estado) throws Exception {
+		return estadoService.existe(estado.getId()) ? ResponseUtil.success(estadoService.guardar(estado))
 				: ResponseUtil.badRequest("No se puede actualizar estado, el ID ingresado no ha sido creado");
 	}
-	@DeleteMapping("{id}")
-	public ResponseEntity<APIResponse<Estado>> eliminarEstado(@PathVariable("id") Integer id) {
-		 return estadoService.existe(id) ? ResponseUtil.success(null):
-			 ResponseUtil.badRequest("No se puede actualizar estado, el ID ingresado no ha sido creado");			 		
+	@DeleteMapping("/{id}")
+	public ResponseEntity<APIResponse<Boolean>> eliminarEstado(@PathVariable Integer id) throws Exception {
+		return estadoService.existe(id) ? ResponseUtil.success(estadoService.eliminar(id)) : ResponseUtil.badRequest("El ID no existe");
 	}
+	
 	// Excepciones
     @ExceptionHandler(Exception.class)
     public ResponseEntity<APIResponse<Estado>> handleException(Exception ex) {    	
