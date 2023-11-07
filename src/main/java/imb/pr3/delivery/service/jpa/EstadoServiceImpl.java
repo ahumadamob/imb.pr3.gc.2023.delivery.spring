@@ -16,35 +16,62 @@ public class EstadoServiceImpl implements IEstadoService {
 	@Autowired
 	EstadoRepository estadoRepository;
 
-	@Override
-	public List<Estado> findAll() throws Exception {
-		List<Estado> estados = estadoRepository.findAll();
-		return (List<Estado>) estados;
 
-	}
-
-	@Override
-	public Optional<Estado> findById(Integer id) {
-		Optional<Estado> estado = estadoRepository.findById(id);
-		return estado;
-
-	}
-
-	@Override
-	public boolean delete(Integer id) {
-	    estadoRepository.deleteById(id);
-		return true;
-	}
-
-	@Override
-	public Estado save(Estado estado) {
-	     estado = estadoRepository.save(estado);
-		return estado;
-	}
 
 	@Override
 	public boolean existe(Integer id) {
-		return (id == null) ? false: estadoRepository.existsById(id);
+		return (id == null) ? false : estadoRepository.existsById(id);
 	}
+
+	@Override
+	public List<Estado> buscarTodos() throws Exception {
+
+		try {
+			List<Estado> estados = estadoRepository.findAll();
+			return (List<Estado>) estados;
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+
+	}
+	
+	@Override
+	public Optional<Estado> buscarPorId(Integer id) throws Exception {
+		try {			
+			Optional<Estado> estado = estadoRepository.findById(id);
+			return estado;
+		}catch(Exception e) {
+			throw new Exception(e.getMessage());
+		}		
+	}
+
+	@Override
+	public boolean eliminar(Integer id) throws Exception{
+		try {			
+			if(estadoRepository.existsById(id)) {
+				estadoRepository.deleteById(id);
+				return true;
+			}else {
+				throw new Exception();
+			}
+		}catch(Exception e) {
+			throw new Exception(e.getMessage());
+		}
+		
+	}
+
+	@Override
+	public Estado guardar(Estado estado) throws Exception {
+		try {			
+			estado = estadoRepository.save(estado);
+			return estado;
+		}catch(Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+		
+	
+	
+
 
 }

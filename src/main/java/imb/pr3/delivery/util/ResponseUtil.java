@@ -14,7 +14,7 @@ import jakarta.validation.*;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 
-
+//creacion de la clase ResponseUtil
 public class ResponseUtil {
 
     private ResponseUtil() {
