@@ -13,65 +13,33 @@ import imb.pr3.delivery.service.IEstadoService;
 @Service
 public class EstadoServiceImpl implements IEstadoService {
 
-	@Autowired
-	EstadoRepository estadoRepository;
+    @Autowired
+    EstadoRepository estadoRepository;
 
+    @Override
+    public boolean existe(Integer id) {
+        return (id == null) ? false : estadoRepository.existsById(id);
+    }
 
+    @Override
+    public List<Estado> buscarTodos(){
+        return estadoRepository.findAll();
+    }
 
-	@Override
-	public boolean existe(Integer id) {
-		return (id == null) ? false : estadoRepository.existsById(id);
-	}
+    @Override
+    public Optional<Estado> buscarPorId(Integer id){
+        Optional<Estado> estado = estadoRepository.findById(id);
+        return estado;
+    }
 
-	@Override
-	public List<Estado> buscarTodos() throws Exception {
+    @Override
+    public boolean eliminar(Integer id){
+            estadoRepository.deleteById(id);
+            return true;
+    }
 
-		try {
-			List<Estado> estados = estadoRepository.findAll();
-			return (List<Estado>) estados;
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-
-	}
-	
-	@Override
-	public Optional<Estado> buscarPorId(Integer id) throws Exception {
-		try {			
-			Optional<Estado> estado = estadoRepository.findById(id);
-			return estado;
-		}catch(Exception e) {
-			throw new Exception(e.getMessage());
-		}		
-	}
-
-	@Override
-	public boolean eliminar(Integer id) throws Exception{
-		try {			
-			if(estadoRepository.existsById(id)) {
-				estadoRepository.deleteById(id);
-				return true;
-			}else {
-				throw new Exception();
-			}
-		}catch(Exception e) {
-			throw new Exception(e.getMessage());
-		}
-		
-	}
-
-	@Override
-	public Estado guardar(Estado estado) throws Exception {
-		try {			
-			estado = estadoRepository.save(estado);
-			return estado;
-		}catch(Exception e) {
-			throw new Exception(e.getMessage());
-		}
-	}
-		
-	
-	
-
-
+    @Override
+    public Estado guardar(Estado estado) throws Exception {
+        return estadoRepository.save(estado);
+    }
 }
