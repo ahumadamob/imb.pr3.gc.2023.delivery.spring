@@ -34,12 +34,6 @@ public class Cliente {
 	@NotBlank(message= "El telefono no puede estar vacío")
 	private String telefono;
 	
-	/*Se genera una relación de uno a muchos entre las entidades Cliente y Pedido. 
-	 La lista, se debe justamente al hecho de que un Cliente puede tener muchos Pedidos.*/
-	@OneToMany(mappedBy = "cliente")
-	private List<Pedido> pedidos;
-	
-	
 	/*Constructor predeterminado 
 	No toma ningún argumento y no realiza ninguna acción específica. Se incluye para permitir la 
 	creación de instancias de la clase Cliente sin inicialización adicional en el momento de la creación.*/

@@ -6,7 +6,7 @@ import java.util.Optional;
 import imb.pr3.delivery.entity.Cliente;
 
 public interface IClienteService {
-	List<Cliente> findAll() throws Exception;
+	List<Cliente> findAll();
 	Optional<Cliente> findById (Integer id);
 	boolean delete (Integer id);
 	Cliente save(Cliente cliente) ;
