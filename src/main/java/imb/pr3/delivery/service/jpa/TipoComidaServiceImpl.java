@@ -60,4 +60,10 @@ public class TipoComidaServiceImpl implements ITipoComidaService{
 		return (id == null) ? false: tipoComidaRepository.existsById(id);
 	}
 
+	@Override
+	public List<TipoComida> buscarHabilitado(boolean habilitado) {
+
+		return tipoComidaRepository.findByHabilitado(habilitado);
+	}
+
 }

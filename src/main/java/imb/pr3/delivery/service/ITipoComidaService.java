@@ -11,5 +11,6 @@ public interface ITipoComidaService {
     public TipoComida guardar (TipoComida tipoComida);
     public boolean eliminar(Integer id);
     public boolean existe(Integer id);
+    public List<TipoComida> buscarHabilitado(boolean habilitado);
 	
 }

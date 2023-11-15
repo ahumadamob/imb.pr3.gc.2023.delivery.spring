@@ -65,6 +65,18 @@ public class TipoComidaController {
 	public ResponseEntity<ApiResponse<Boolean>> eliminarComida(@PathVariable Integer id) throws Exception {
 		return tipoComidaService.existe(id) ? ResponseUtil.success(tipoComidaService.eliminar(id)) : ResponseUtil.badRequest("El ID no existe");
 	}
+	@GetMapping("/habilitado")
+	public ResponseEntity<ApiResponse<List<TipoComida>>> buscarHabilitados() {
+		List<TipoComida> tipoComidaHabilitadas = tipoComidaService.buscarHabilitado(true);
+		return tipoComidaHabilitadas.isEmpty() ? ResponseUtil.notFound("No hay comidas habilitadas ")
+				: ResponseUtil.success(tipoComidaHabilitadas);
+	}
+	@GetMapping("/deshabilitado")
+	public ResponseEntity<ApiResponse<List<TipoComida>>> buscarDeshabilitados() {
+		List<TipoComida> tipoComidaDeshabilitadas = tipoComidaService.buscarHabilitado(false);
+		return tipoComidaDeshabilitadas.isEmpty() ? ResponseUtil.notFound("No hay comidas Deshabilitadas ")
+				: ResponseUtil.success(tipoComidaDeshabilitadas);
+	}
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<TipoComida>> handleException(Exception ex) {    	
 	    return ResponseUtil.badRequest(ex.getMessage());
