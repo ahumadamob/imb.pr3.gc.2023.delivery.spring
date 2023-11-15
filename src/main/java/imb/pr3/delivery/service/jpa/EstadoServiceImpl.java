@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import imb.pr3.delivery.entity.Estado;
+import imb.pr3.delivery.entity.TipoComida;
 import imb.pr3.delivery.repository.EstadoRepository;
 import imb.pr3.delivery.service.IEstadoService;
 
@@ -27,9 +28,9 @@ public class EstadoServiceImpl implements IEstadoService {
     }
 
     @Override
-    public Optional<Estado> buscarPorId(Integer id){
-        Optional<Estado> estado = estadoRepository.findById(id);
-        return estado;
+    public Estado buscarPorId(Integer id){
+    	Optional<Estado> opt = estadoRepository.findById(id);
+        return opt.orElse(null);
     }
 
     @Override
@@ -42,4 +43,9 @@ public class EstadoServiceImpl implements IEstadoService {
     public Estado guardar(Estado estado) throws Exception {
         return estadoRepository.save(estado);
     }
+
+	@Override
+	public List<Estado> buscarPorHabilitado(boolean habilitado) {
+		return estadoRepository.findByHabilitado(habilitado);
+	}
 }

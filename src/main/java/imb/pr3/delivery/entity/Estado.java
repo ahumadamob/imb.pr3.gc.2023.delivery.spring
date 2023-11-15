@@ -12,8 +12,17 @@ public class Estado {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nombre;
+	private boolean habilitado;
 
 	
+	public boolean isHabilitado() {
+		return habilitado;
+	}
+
+	public void setHabilitado(boolean habilitado) {
+		this.habilitado = habilitado;
+	}
+
 	public Integer getId() {
 		return id;
 	}
