@@ -9,13 +9,9 @@ public interface IEstadoService {
 
 
 	public List<Estado> buscarTodos() throws Exception ;
-
-	public Optional<Estado> buscarPorId(Integer id) throws Exception;
-	
-
-	boolean existe(Integer id);
-	
+	Estado buscarPorId(Integer id) throws Exception;
 	public boolean eliminar(Integer id) throws Exception;
-	
 	public Estado guardar (Estado estado) throws Exception;
+	boolean existe(Integer id);
+	public List<Estado> buscarPorHabilitado(boolean habilitado);
 }
