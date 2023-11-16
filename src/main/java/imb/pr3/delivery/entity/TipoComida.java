@@ -17,7 +17,18 @@ public class TipoComida {
 	private Integer id;
 	@NotBlank(message= "El nombre no puede estar vacío")
 	private String nombre;
-	
+
+	private boolean habilitado;
+
+	public TipoComida() {
+	}
+
+	public TipoComida(Integer id, String nombre, boolean habilitado) {
+		this.id = id;
+		this.nombre = nombre;
+		this.habilitado = habilitado;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -33,6 +44,12 @@ public class TipoComida {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
 
+	public boolean isHabilitado() {
+		return habilitado;
+	}
+
+	public void setHabilitado(boolean habilitado) {
+		this.habilitado = habilitado;
+	}
 }

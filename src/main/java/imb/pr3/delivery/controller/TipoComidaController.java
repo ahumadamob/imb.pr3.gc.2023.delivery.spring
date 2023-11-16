@@ -27,51 +27,113 @@ import jakarta.validation.ConstraintViolationException;
 @CrossOrigin(origins = "*")
 @RequestMapping(path="api/v1/tipoComida")
 public class TipoComidaController {
-	
-	
-	
+
+
 	@Autowired
 	private TipoComidaServiceImpl tipoComidaService;
 	List<String> errorMessages = new ArrayList<>();
-	
+
 	@GetMapping("")
 	public ResponseEntity<ApiResponse<List<TipoComida>>> buscarTodos() {
-	    List<TipoComida> tipoComida = tipoComidaService.buscarTodos();
-	    return tipoComida.isEmpty() ? ResponseUtil.notFound("No hay comidas guardadas")
-	            : ResponseUtil.success(tipoComida);
+		List<TipoComida> tipoComida = tipoComidaService.buscarTodos();
+		return tipoComida.isEmpty() ? ResponseUtil.notFound("No hay comidas guardadas")
+				: ResponseUtil.success(tipoComida);
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<TipoComida>> obtenerComidaPorId(@PathVariable("id") Integer id){
 		TipoComida tipoComida = tipoComidaService.buscarPorId(id);
 		return tipoComida == null ? ResponseUtil.notFound("No se encontró la comida con el identificador proporcionado")
-				: ResponseUtil.success(tipoComida);	
+				: ResponseUtil.success(tipoComida);
 	}
-	
-	
-	@PostMapping("")
-	public ResponseEntity<ApiResponse<TipoComida>> guardarComida(@RequestBody TipoComida comida) throws Exception{
-		return comida.getNombre().isEmpty() ? ResponseUtil.badRequest("Debe ingresar un nombre") : ResponseUtil.created(tipoComidaService.guardar(comida));
 
+	@PostMapping("")
+	public ResponseEntity<ApiResponse<TipoComida>> guardarComida(@RequestBody TipoComida comida) throws Exception {
+		return comida.getNombre().isEmpty() ? ResponseUtil.badRequest("Debe ingresar un nombre") : ResponseUtil.created(tipoComidaService.guardar(comida));
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse<TipoComida>> modificarComida(@PathVariable("id") Integer id,@RequestBody TipoComida comida) throws Exception{
-		return tipoComidaService.existe(comida.getId()) ?  ResponseUtil.success(tipoComidaService.guardar(comida)) 
+	public ResponseEntity<ApiResponse<TipoComida>> modificarComida(@PathVariable("id") Integer id, @RequestBody TipoComida comida) throws Exception {
+		return tipoComidaService.existe(comida.getId()) ? ResponseUtil.success(tipoComidaService.guardar(comida))
 				: ResponseUtil.badRequest("No existe la comida con el id especificado");
 	}
-	
+
+	@GetMapping("/habilitado")
+	public ResponseEntity<ApiResponse<List<TipoComida>>> buscarHabilitados() {
+		List<TipoComida> tipoComidaHabilitadas = tipoComidaService.buscarHabilitado(true);
+		return tipoComidaHabilitadas.isEmpty() ? ResponseUtil.notFound("No hay comidas habilitadas ")
+				: ResponseUtil.success(tipoComidaHabilitadas);
+	}
+
+	@GetMapping("/deshabilitado")
+	public ResponseEntity<ApiResponse<List<TipoComida>>> buscarDeshabilitados() {
+		List<TipoComida> tipoComidaDeshabilitadas = tipoComidaService.buscarHabilitado(false);
+		return tipoComidaDeshabilitadas.isEmpty() ? ResponseUtil.notFound("No hay comidas Deshabilitadas ")
+				: ResponseUtil.success(tipoComidaDeshabilitadas);
+	}
+
+	@PutMapping("/habilitar/{id}")
+	public ResponseEntity<ApiResponse<TipoComida>> habilitarComida(@PathVariable Integer id) throws Exception {
+		TipoComida tipoComida = tipoComidaService.buscarPorId(id);
+
+		if (tipoComida == null)
+			return ResponseUtil.badRequest("El ID no existe");
+
+		if (!tipoComida.isHabilitado()) {
+			tipoComida.setHabilitado(true);
+			return ResponseUtil.success(tipoComidaService.guardar(tipoComida));
+		} else {
+			return ResponseUtil.badRequest("La comida ya está habilitada.");
+		}
+	}
+
+	@PutMapping("/deshabilitar/{id}")
+	public ResponseEntity<ApiResponse<TipoComida>> deshabilitarComida(@PathVariable Integer id) throws Exception {
+		TipoComida tipoComida = tipoComidaService.buscarPorId(id);
+
+		if (tipoComida == null)
+			return ResponseUtil.badRequest("El ID no existe");
+
+		if (tipoComida.isHabilitado()) {
+			tipoComida.setHabilitado(false);
+			return ResponseUtil.success(tipoComidaService.guardar(tipoComida));
+		} else {
+			return ResponseUtil.badRequest("La comida ya está deshabilitada.");
+		}
+	}
+
+
+	@DeleteMapping("/deshabilitado/{id}")
+	public ResponseEntity<ApiResponse<Boolean>> eliminarComidaDeshabilitada(@PathVariable Integer id) throws Exception {
+		TipoComida tipoComida = tipoComidaService.buscarPorId(id);
+
+		if (tipoComida == null)
+			return ResponseUtil.badRequest("El ID no existe");
+
+		return !tipoComida.isHabilitado() ?
+				ResponseUtil.success(tipoComidaService.eliminar(id)) :
+				ResponseUtil.badRequest("No se puede eliminar. La comida no está deshabilitada.");
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse<Boolean>> eliminarComida(@PathVariable Integer id) throws Exception {
-		return tipoComidaService.existe(id) ? ResponseUtil.success(tipoComidaService.eliminar(id)) : ResponseUtil.badRequest("El ID no existe");
+		TipoComida tipoComida = tipoComidaService.buscarPorId(id);
+
+		if (tipoComida == null)
+			return ResponseUtil.badRequest("El ID no existe");
+
+		return !tipoComida.isHabilitado() ?
+				ResponseUtil.success(tipoComidaService.eliminar(id)) :
+				ResponseUtil.badRequest("No se puede eliminar. La comida no está deshabilitada.");
 	}
+
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ApiResponse<TipoComida>> handleException(Exception ex) {    	
-	    return ResponseUtil.badRequest(ex.getMessage());
+	public ResponseEntity<ApiResponse<TipoComida>> handleException(Exception ex) {
+		return ResponseUtil.badRequest(ex.getMessage());
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<ApiResponse<TipoComida>> handleConstraintViolationException(ConstraintViolationException ex) {
-	    return ResponseUtil.handleConstraintException(ex);
-	}    
+		return ResponseUtil.handleConstraintException(ex);
 	}
+}
